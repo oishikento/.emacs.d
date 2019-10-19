@@ -12,7 +12,7 @@
 ;; (load my-settings t)
 
 ;; カラーテーマ
-(load-theme 'wombat t)
+;;(load-theme 'wombat t)
 
 ;; 日本語 UTF-8
 (set-locale-environment nil)
@@ -159,3 +159,8 @@
 
 ;; *scratch* の初期メッセージ
 (setq initial-scratch-message "")
+
+
+;; git-gutter
+;; 差分の可視化
+(global-git-gutter-mode t)
