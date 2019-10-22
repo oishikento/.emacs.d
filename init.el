@@ -164,3 +164,8 @@
 ;; git-gutter
 ;; 差分の可視化
 (global-git-gutter-mode t)
+
+
+;; tex
+;; (setq tex-settings "~/.emacs.d/tex_settings.el")
+;; (load tex-settings t)
