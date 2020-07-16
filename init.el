@@ -1,18 +1,55 @@
-;; package.el
-(require 'package)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  For emacs26-nox (no gui version)      
+;;  
+;;  oishi@ynl.t.u-tokyo.ac.jp
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;; package-archivesを上書き
 (setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("marmalade" . "https://marmalade-repo.org/packages/")
-        ("org" . "https://orgmode.org/elpa/")))
+      '(("melpa" . "https://melpa.org/packages/")
+        ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("org" . "https://orgmode.org/elpa/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
+
+;; 初期化
 (package-initialize)
+
+
+;; パッケージ情報の更新
+(unless package-archive-contents (package-refresh-contents))
+
+;; インストールするパッケージ
+(defvar my/favorite-packages
+  '(
+    ;;;; for auto-complete
+    auto-complete auto-complete-clang
+
+    ;;;; for Japanese
+    mozc
+
+    ;;;; explorer
+    neotree
+    
+    ;;;; git
+    git-gutter
+    ))
+
+;; my/favorite-packagesからインストールしていないパッケージをインストール
+(dolist (package my/favorite-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+
 
 ;; (setq my-settings "~/.emacs.d/my_settings.el")
 ;; (load my-settings t)
 
 ;; カラーテーマ
-;;(load-theme 'wombat t)
+(load-theme 'wombat t)
 
 ;; 日本語 UTF-8
 (set-locale-environment nil)
@@ -43,13 +80,9 @@
 
 ;; ウィンドウの透明化
 ;; active / not-active (= alpha)
-(add-to-list 'default-frame-alist '(alpha . (0.85 0.85)))
+;;(add-to-list 'default-frame-alist '(alpha . (0.85 0.85)))
 
-;; メニューバーを消す
-(menu-bar-mode -1)
 
-;; ツールバーを消す
-(tool-bar-mode -1)
 
 ;; 列数の表示
 (column-number-mode t)
@@ -57,15 +90,17 @@
 ;; 行数の表示
 ;; 4桁分の領域を確保
 ;; [f6]で行数表示の切り替え
-(global-linum-mode t)
-(setq linum-format"%4d ")
-(global-set-key [f6] 'linum-mode)
+;;(global-linum-mode t)
+;;(setq linum-format"%4d ")
+;;(global-set-key [f6] 'linum-mode)
+(if (version<= "26.0.50" emacs-version)
+      (global-display-line-numbers-mode))
 
 ;; 対応する()を光らせる
 (show-paren-mode 1)
 
 ;; space tab の可視化
-;;(global-whitespace-mode 1)
+;; (global-whitespace-mode 1)
 
 ;; 複数ウィンドウを禁止する
 (setq ns-pop-up-frames nil)
@@ -74,7 +109,7 @@
 ;; スクロール行数
 (setq scroll-conservatively 1)
 (setq scroll-margin 10)
-(setq next-screen-context-lines 10)
+;;(setq next-screen-context-lines 10)
 (setq scroll-preserve-screen-position t)
 
 ;; yes, no -> y, n
@@ -121,14 +156,16 @@
 
 ;; auto complete
 (require 'auto-complete-config)
-;;(ac-config-default)
+(ac-config-default)
 (global-auto-complete-mode)
+
 ;; elscreen (tab)
 ;;(require 'elscreen)
 ;;(elscreen-start)
 
 ;; neo tree (side bar)
 (require 'neotree)
+;; [f5] で切り替え
 (global-set-key [f5] 'neotree-toggle)
 
 ;; 括弧を閉じる
@@ -169,3 +206,17 @@
 ;; tex
 ;; (setq tex-settings "~/.emacs.d/tex_settings.el")
 ;; (load tex-settings t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (auto-complete-clang neotree mozc git-gutter auto-complete))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
